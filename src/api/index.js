@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const fetchJobs = async (page, searchQueries) => {
     console.log("fetching jobs");
     const params = new URLSearchParams();
@@ -16,7 +15,7 @@ const fetchJobs = async (page, searchQueries) => {
         params: params,
     });
     localStorage.setItem('job_cache', JSON.stringify({ data: res?.data?.results, lastFetchTimestamp: new Date() }));
-    console.log((localStorage.getItem('job_cache')))
+    // console.log((localStorage.getItem('job_cache')))
     
     return res;
 };

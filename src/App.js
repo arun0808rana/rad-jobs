@@ -1,18 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import DummyCompanyLogo from './assets/company_logo_dummy.png';
+import { useState } from 'react';
 import JobsListingPage from './JobsListingPage';
 import {
-  BrowserRouter,
   Routes,
   Route,
   useNavigate,
   Link,
 } from "react-router-dom";
 import JobDescription from './JobDescription';
-import About from './About';
 import { useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { globalStateActionCreator } from './redux/actions';
@@ -37,7 +33,7 @@ function App() {
   });
   const [isDark, setIsDark] = useState(false);
   const [pageNo, setPageNo] = useState(1);
-  const [state, setState] = useState({ error: null, isLoaded: false, data: [], searchQuery: '', hashtagsArr: [] })
+  // const [state, setState] = useState({ error: null, isLoaded: false, data: [], searchQuery: '', hashtagsArr: [] })
 
   const handleDarkMode = () => {
     console.log('isDark', isDark)
@@ -61,10 +57,16 @@ function App() {
     dispatch(globalStateActionCreator(res?.data?.results));
   }
 
+  //  search job when user press 'enter' key
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    handleJobSearch();
+  }
+
   // effects
-  useEffect(() => {
-    console.log('search queries', searchQueries)
-  }, [searchQueries])
+  // useEffect(() => {
+  //   console.log('search queries', searchQueries)
+  // }, [searchQueries])
 
   return (
     <div className={"dark-container " + (isDark ? 'dark-mode' : '')}>
@@ -91,12 +93,12 @@ function App() {
           </div>
         </div>
         <div className="wrapper">
-          <div className="search-menu">
+          <form className="search-menu" onSubmit={handleSearchSubmit}>
             {/* <div className="search-bar">
               <input placeholder='Enter job title' type="text" className="search-box" onChange={(e) => setSearchQueries(prevState => ({ ...prevState, what: e.target.value }))} />
             </div> */}
             <div className="search-location">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966" fill="currentColor"
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.966 56.966" fill="currentColor"
                 // stroke="currentColor"
                 // strokeWidth={2}
                 // strokeLinecap="round"
@@ -165,7 +167,7 @@ function App() {
               <input type="number" placeholder="Min. Salary" onChange={(e) => setSearchQueries(prevState => ({ ...prevState, salary_min: e.target.value }))} />
             </div>
             <button className="search-button" onClick={handleJobSearch}>Find Job</button>
-          </div>
+          </form>
           <div className="main-container">
             <div className="search-type">
               {/* <div className="alert">
